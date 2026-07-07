@@ -225,6 +225,36 @@
       box-shadow: var(--shadow);
     }
 
+    .nariResult{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:12px;
+      align-items:center;
+      max-width:720px;
+      margin:14px auto;
+      padding:12px;
+      border:1px solid rgba(25, 167, 168, .24);
+      border-radius:8px;
+      background:var(--soft);
+      text-align:left;
+    }
+    .nariResult img{
+      width:92px;
+      height:auto;
+      filter:drop-shadow(0 10px 14px rgba(86, 64, 35, .14));
+    }
+    .nariResult .talk{
+      color:var(--text);
+      font-weight:800;
+      line-height:1.55;
+    }
+    .resultSummary{
+      max-width:720px;
+      margin:10px auto 0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
     .learnChar{
       font-size: 104px;
       font-weight: 700;
@@ -378,6 +408,15 @@
       background: var(--soft);
       border: 1px solid rgba(25, 167, 168, .24);
     }
+
+    @media (max-width: 760px){
+      .nariResult{
+        grid-template-columns:68px 1fr;
+      }
+      .nariResult img{
+        width:68px;
+      }
+    }
   </style>
 </head>
 
@@ -491,6 +530,21 @@
       <div class="row">
         <button class="button secondary" onclick="goTo(mainMenu)">Back to Menu</button>
         <button class="button secondary" onclick="goTo(homeScreen)">Home</button>
+      </div>
+    </div>
+
+    <!-- ===== Result ===== -->
+    <div id="resultScreen" class="hidden">
+      <h2 id="resultTitle">Clear!</h2>
+      <div class="nariResult">
+        <img id="resultNari" src="assets/chibi/chibi-cheer.png" alt="Nari">
+        <div class="talk" id="resultTalk">Nice work! Keep going.</div>
+      </div>
+      <div class="resultSummary" id="resultSummary"></div>
+      <div class="row">
+        <button class="button" onclick="goTo(homeScreen)">Home</button>
+        <button class="button secondary" onclick="goTo(modeMenu)">Match Menu</button>
+        <button class="button secondary" onclick="goTo(learningMenu)">Learning Menu</button>
       </div>
     </div>
 
@@ -624,6 +678,11 @@
   const learningMenu = document.getElementById('learningMenu');
   const learningShow = document.getElementById('learningShow');
   const learningQuiz = document.getElementById('learningQuiz');
+  const resultScreen = document.getElementById('resultScreen');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultTalk = document.getElementById('resultTalk');
+  const resultSummary = document.getElementById('resultSummary');
+  const resultNari = document.getElementById('resultNari');
 
   const gameBoard    = document.getElementById('gameBoard');
   const timerDisplay = document.getElementById('timer');
@@ -632,9 +691,17 @@
   const modeLabel    = document.getElementById('modeLabel');
 
   function goTo(screen){
-    [homeScreen, modeMenu, mainMenu, settingScreen, gameArea, learningMenu, learningShow, learningQuiz]
+    [homeScreen, modeMenu, mainMenu, settingScreen, gameArea, learningMenu, learningShow, learningQuiz, resultScreen]
       .forEach(s => s.classList.add('hidden'));
     screen.classList.remove('hidden');
+  }
+
+  function showResult({ title, talk, summary, nari = 'cheer' }){
+    resultTitle.textContent = title;
+    resultTalk.textContent = talk;
+    resultSummary.textContent = summary;
+    resultNari.src = nari === 'wink' ? 'assets/chibi/chibi-wink.png' : 'assets/chibi/chibi-cheer.png';
+    goTo(resultScreen);
   }
 
   // =========================
@@ -999,7 +1066,12 @@
         if (matchedCount === selectedPairs.size){
           clearInterval(timerInterval);
           timerInterval = null;
-          setTimeout(() => alert(`Clear! Time: ${timer}s / Attempts: ${attempts}`), 250);
+          setTimeout(() => showResult({
+            title: 'Clear!',
+            talk: 'すごい！文字と音のペア、しっかり見つけられたね。',
+            summary: `Time: ${timer}s / Attempts: ${attempts}`,
+            nari: 'wink'
+          }), 250);
         }
       } else {
         boardLocked = true;
@@ -1406,8 +1478,12 @@
           if (ch === target){
             learnIndexInUnit++;
             if (learnIndexInUnit >= chars.length){
-              alert(`Unit ${CONSONANT_UNITS[learnUnitIndex].unit} complete.`);
-              goTo(learningMenu);
+              showResult({
+                title: `Unit ${CONSONANT_UNITS[learnUnitIndex].unit} complete`,
+                talk: 'よくできました！この調子で、次の文字の島へ進もう。',
+                summary: 'Consonant learning unit complete.',
+                nari: 'cheer'
+              });
             } else {
               goTo(learningShow);
               showLearnCard();
@@ -1452,8 +1528,12 @@
         if (c.which === which){
           learnIndexInUnit++;
           if (learnIndexInUnit >= pairs.length){
-            alert(`Unit ${VOWEL_UNITS[learnUnitIndex].unit} complete.`);
-            goTo(learningMenu);
+            showResult({
+              title: `Unit ${VOWEL_UNITS[learnUnitIndex].unit} complete`,
+              talk: '母音の聞き分け、いい感じ！耳がどんどん育ってるよ。',
+              summary: 'Vowel learning unit complete.',
+              nari: 'cheer'
+            });
           } else {
             goTo(learningShow);
             showLearnCard();

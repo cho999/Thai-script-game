@@ -11,25 +11,52 @@
   <style>
     :root{
       --thai-font: 'Noto Sans Thai', system-ui, sans-serif;
-      --bg: #f0f4ff;
-      --primary: #3b82f6;
-      --primary2: #2563eb;
-      --card-back: #a78bfa;
-      --rare: #f59e0b;
-      --rare-bg: #fff7ed;
-      --text: #0f172a;
+      --bg: #fff8e7;
+      --surface: #ffffff;
+      --surface-warm: #fffdf5;
+      --soft: #dff7f4;
+      --line: #eadfca;
+      --primary: #f47c3c;
+      --primary2: #d95f25;
+      --accent: #19a7a8;
+      --accent2: #0f8588;
+      --card-back: #19a7a8;
+      --rare: #ffd45a;
+      --rare-bg: #fff8d8;
+      --good: #68b45b;
+      --bad: #d94f5c;
+      --text: #3b352b;
+      --muted: #766d5f;
+      --shadow: 0 18px 42px rgba(86, 64, 35, .14);
     }
 
     body{
       font-family: var(--thai-font);
-      background: var(--bg);
+      background:
+        linear-gradient(115deg, transparent 0 18%, rgba(25, 167, 168, .12) 18% 19%, transparent 19% 68%, rgba(104, 180, 91, .12) 68% 69%, transparent 69%),
+        linear-gradient(25deg, transparent 0 34%, rgba(255, 212, 90, .22) 34% 35%, transparent 35%),
+        linear-gradient(135deg, rgba(244, 124, 60, .07) 25%, transparent 25%) 0 0 / 42px 42px,
+        linear-gradient(180deg, #fffdf5 0%, var(--bg) 100%);
       text-align: center;
       margin: 0;
       padding: 0;
       color: var(--text);
     }
 
-    h1{ font-size: 32px; margin: 16px 0 6px; }
+    body::before{
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0 22px, rgba(25, 167, 168, .06) 23px, transparent 24px),
+        linear-gradient(transparent 0 22px, rgba(244, 124, 60, .05) 23px, transparent 24px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, .55), transparent 78%);
+    }
+
+    h1{ font-size: 32px; margin: 16px 0 6px; color: var(--text); }
     h2{ margin: 10px 0; }
     .hidden{ display:none; }
 
@@ -41,7 +68,7 @@
 
     .sub{
       font-size: 14px;
-      opacity: .85;
+      color: var(--muted);
       margin: 4px 0 14px;
     }
 
@@ -51,14 +78,21 @@
       padding: 12px 20px;
       margin: 8px;
       border: none;
-      border-radius: 10px;
+      border-bottom: 4px solid var(--primary2);
+      border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
       user-select: none;
+      font-weight: 700;
     }
-    .button:hover{ background: var(--primary2); }
-    .button.secondary{ background: #64748b; }
-    .button.secondary:hover{ background: #475569; }
+    .button:hover{ filter: brightness(1.04); }
+    .button.secondary{
+      background: var(--surface-warm);
+      border: 1px solid var(--line);
+      border-bottom: 4px solid var(--line);
+      color: var(--text);
+    }
+    .button.secondary:hover{ background: var(--soft); }
 
     .row{
       display:flex;
@@ -71,7 +105,7 @@
 
     .note{
       font-size: 13px;
-      opacity: .85;
+      color: var(--muted);
       margin: 8px auto 0;
       max-width: 980px;
       line-height: 1.4;
@@ -93,15 +127,17 @@
       font-size: 24px;
       font-weight: 700;
       color: #fff;
-      border-radius: 14px;
+      border-radius: 8px;
       cursor: pointer;
       display:flex;
       align-items:center;
       justify-content:center;
-      background: var(--card-back); /* back is plain */
+      background:
+        linear-gradient(135deg, rgba(255, 212, 90, .22), transparent 52%),
+        linear-gradient(135deg, var(--primary), var(--accent));
       transition: transform .06s, background-color .2s;
       user-select: none;
-      border: 3px solid transparent;
+      border: 2px solid transparent;
       box-sizing: border-box;
       padding: 6px;
       line-height: 1.05;
@@ -109,7 +145,12 @@
       word-break: break-word;
     }
     .card:active{ transform: scale(.98); }
-    .card.flipped{ background: var(--primary); }
+    .card.flipped{
+      background: var(--surface);
+      color: var(--text);
+      border-color: rgba(25, 167, 168, .36);
+      box-shadow: 0 8px 22px rgba(86, 64, 35, .1);
+    }
     .card.rare{ border-color: var(--rare); }
 
     .card[data-is-thai="1"].flipped{ font-size: 44px; }
@@ -118,6 +159,8 @@
     #timer, #attempts{
       font-size: 18px;
       margin: 8px 0;
+      color: var(--accent2);
+      font-weight: 700;
     }
 
     /* ===== Setting grid ===== */
@@ -132,10 +175,10 @@
 
     .pair{
       padding: 10px 10px;
-      border: 2px solid var(--primary);
-      border-radius: 12px;
+      border: 1px solid rgba(25, 167, 168, .28);
+      border-radius: 8px;
       cursor: pointer;
-      background:#fff;
+      background: var(--surface-warm);
       font-size: 18px;
       line-height: 1.2;
       user-select: none;
@@ -150,8 +193,9 @@
       word-break: break-word;
     }
     .pair.selected{
-      background: var(--primary);
-      color:#fff;
+      background: var(--soft);
+      border-color: rgba(25, 167, 168, .6);
+      color: var(--text);
     }
 
     .pair.rare{
@@ -161,7 +205,7 @@
     .pair.rare.selected{
       background: var(--rare);
       border-color: var(--rare);
-      color: #111827;
+      color: var(--text);
     }
 
     .pair.disabled{
@@ -173,12 +217,12 @@
     /* ===== Learning ===== */
     .learnBox{
       background: rgba(255,255,255,.92);
-      border: 1px solid #c7d2fe;
-      border-radius: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
       max-width: 980px;
       margin: 14px auto;
       padding: 14px 12px;
-      box-shadow: 0 10px 26px rgba(15,23,42,.06);
+      box-shadow: var(--shadow);
     }
 
     .learnChar{
@@ -228,23 +272,23 @@
     .choiceBtn{
       min-width: 140px;
       padding: 12px 14px;
-      border-radius: 12px;
-      border: 2px solid var(--primary);
-      background:#fff;
+      border-radius: 8px;
+      border: 1px solid rgba(25, 167, 168, .32);
+      background: var(--surface);
       cursor:pointer;
       font-size: 18px;
       user-select:none;
     }
-    .choiceBtn:hover{ background: #eef2ff; }
+    .choiceBtn:hover{ background: var(--soft); }
     .choiceBtn.rare{ border-color: var(--rare); background: var(--rare-bg); }
 
     .pill{
       display:inline-flex;
       align-items:center;
       gap: 8px;
-      background:#fff;
-      border: 1px solid #c7d2fe;
-      border-radius: 999px;
+      background: var(--surface-warm);
+      border: 1px solid var(--line);
+      border-radius: 8px;
       padding: 8px 12px;
       font-size: 14px;
     }
@@ -253,9 +297,9 @@
       font-family: var(--thai-font);
       font-size: 14px;
       padding: 6px 10px;
-      border-radius: 10px;
-      border: 1px solid #c7d2fe;
-      background:#fff;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
     }
 
     .unitGrid{
@@ -267,17 +311,19 @@
     }
 
     .unitCard{
-      background:#fff;
-      border: 2px solid #c7d2fe;
-      border-radius: 16px;
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
       padding: 12px;
       text-align:left;
+      box-shadow: 0 8px 22px rgba(86, 64, 35, .08);
     }
     .unitCard h4{
       margin: 0 0 8px;
       font-size: 16px;
     }
     .unitChars{
+      color: var(--accent2);
       font-size: 26px;
       font-weight: 700;
       letter-spacing: .5px;
@@ -294,7 +340,7 @@
     .copyright{
       margin-top: 14px;
       font-size: 12px;
-      opacity: .65;
+      color: var(--muted);
     }
 
     /* Vowel-pair show */
@@ -307,11 +353,11 @@
       flex-wrap: wrap;
     }
     .vowelBox{
-      border: 2px solid #c7d2fe;
-      border-radius: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
       padding: 10px 14px;
       min-width: 180px;
-      background: #fff;
+      background: var(--surface);
     }
     .vowelBox .big{
       font-size: 72px;
@@ -328,9 +374,9 @@
       margin-top: 8px;
       font-size: 12px;
       padding: 4px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
+      border-radius: 8px;
+      background: var(--soft);
+      border: 1px solid rgba(25, 167, 168, .24);
     }
   </style>
 </head>

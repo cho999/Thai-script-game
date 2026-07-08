@@ -228,7 +228,7 @@
     .nariResult{
       display:grid;
       grid-template-columns:auto 1fr;
-      gap:12px;
+      gap:10px;
       align-items:center;
       max-width:720px;
       margin:14px auto;
@@ -239,9 +239,9 @@
       text-align:left;
     }
     .nariResult img{
-      width:92px;
+      width:52px;
       height:auto;
-      filter:drop-shadow(0 10px 14px rgba(86, 64, 35, .14));
+      filter:drop-shadow(0 7px 10px rgba(86, 64, 35, .14));
     }
     .nariResult .talk{
       color:var(--text);
@@ -321,6 +321,23 @@
       border-radius: 8px;
       padding: 8px 12px;
       font-size: 14px;
+    }
+
+    .portalLink{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      min-height:36px;
+      margin:0 0 10px;
+      padding:0 10px;
+      border:1px solid rgba(25, 167, 168, .24);
+      border-radius:8px;
+      background:var(--soft);
+      color:var(--accent2);
+      font-size:14px;
+      font-weight:700;
+      text-decoration:none;
     }
 
     select{
@@ -411,10 +428,10 @@
 
     @media (max-width: 760px){
       .nariResult{
-        grid-template-columns:68px 1fr;
+        grid-template-columns:42px 1fr;
       }
       .nariResult img{
-        width:68px;
+        width:42px;
       }
     }
   </style>
@@ -422,6 +439,7 @@
 
 <body>
   <div class="panel">
+    <a class="portalLink" href="https://cho999.github.io/thai-word-order-game/">← 統合入口へ</a>
     <h1>Thai Match</h1>
     <div class="sub">Match game + Learning mode (units, sound check, tap-to-quiz)</div>
 

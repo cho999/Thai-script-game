@@ -239,7 +239,7 @@
       text-align:left;
     }
     .nariResult img{
-      width:52px;
+      width:68px;
       height:auto;
       filter:drop-shadow(0 7px 10px rgba(86, 64, 35, .14));
     }
@@ -340,6 +340,20 @@
       text-decoration:none;
     }
 
+    .portalBannerLink{
+      display:block;
+      width:min(320px, 100%);
+      margin:0 auto 12px;
+      line-height:0;
+    }
+    .portalBannerLink img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:8px;
+      box-shadow:0 8px 18px rgba(86, 64, 35, .1);
+    }
+
     select{
       font-family: var(--thai-font);
       font-size: 14px;
@@ -428,10 +442,10 @@
 
     @media (max-width: 760px){
       .nariResult{
-        grid-template-columns:42px 1fr;
+        grid-template-columns:55px 1fr;
       }
       .nariResult img{
-        width:42px;
+        width:55px;
       }
     }
   </style>
@@ -439,7 +453,9 @@
 
 <body>
   <div class="panel">
-    <a class="portalLink" href="https://cho999.github.io/thai-word-order-game/">← 統合入口へ</a>
+    <a class="portalBannerLink" href="https://cho999.github.io/thai-word-order-game/" aria-label="ナーリーのタイ語冒険ノートへ">
+      <img src="assets/banners/nari-adventure-link-banner.png" alt="ナーリーのタイ語冒険ノート">
+    </a>
     <h1>Thai Match</h1>
     <div class="sub">Match game + Learning mode (units, sound check, tap-to-quiz)</div>
 
